@@ -1,7 +1,7 @@
 class SignupsController < ApplicationController
     rescue_from ActiveRecord::RecordInvalid, with: :invalid
         def create
-            signup = Signup.create(signup_params)
+            signup = Signup.create!(signup_params)
             render json: signup, status: :created
         end
     
@@ -12,7 +12,7 @@ class SignupsController < ApplicationController
         end
     
         def invalid(e)
-            render json: {error: e.errors.full_message }, status: :unprocessable_entity
+            render json: {error: e.record.errors.full_messages}, status: :unprocessable_entity
         end
     end
     

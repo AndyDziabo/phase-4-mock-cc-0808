@@ -1,12 +1,12 @@
 class CampersController < ApplicationController
     
     def index
-        render json: Camper.all, status: :ok
+        render json: Camper.all
     end
 
     def show
         camper = Camper.find(params[:id])
-        render json: camper, status: :ok
+        render json: camper, serializer: CamperActivitiesSerializer
     rescue ActiveRecord::RecordNotFound
         render json: {error: "Camper not found"}, status: :not_found
     end
@@ -15,7 +15,7 @@ class CampersController < ApplicationController
         camper = Camper.create!(camper_params)
         render json: camper, status: :created
     rescue ActiveRecord::RecordInvalid => invalid
-        render json: {error: invalid.record.errors.full_message }, status: :unprocessable_entity
+        render json: {error: invalid }, status: :unprocessable_entity
     end
 
     private
